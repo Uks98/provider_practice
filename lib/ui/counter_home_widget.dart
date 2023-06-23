@@ -1,18 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:provider_practice/provider/count_provider.dart';
+import 'package:provider_practice/src/component/view_counter.dart';
+import 'package:provider/provider.dart';
 class CountHomeWidget extends StatelessWidget {
-  const CountHomeWidget({Key? key}) : super(key: key);
-
+   CountHomeWidget({Key? key}) : super(key: key);
+CountProvider? _countProvider;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Consumer<CountProvider>(
-        builder: (BuildContext context, value, Widget? child)=>Text(
-          value.count.toString(),
-          style: TextStyle(fontSize: 80),
+    _countProvider = Provider.of<CountProvider>(context,listen: false);
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("count provider"),
+
         ),
-      ),
+        body: ViewCountWidget(),
+        floatingActionButton:
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(onPressed: () {
+              _countProvider?.add();
+            }, icon: Icon(Icons.add)),
+            IconButton(onPressed: () {
+              _countProvider?.remove();
+            }, icon: Icon(Icons.exposure_minus_1))
+          ],
+        ),
     );
   }
 }
